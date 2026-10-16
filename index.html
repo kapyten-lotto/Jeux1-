@@ -4,90 +4,223 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#4f46e5">
+<meta name="theme-color" content="#F5F5F5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Jeux">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon-192.png">
 <title>Analyse des jeux</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f7f7fa;--card:#fff;--text:#1a1a1a;--muted:#666;--accent:#4f46e5;--even:#0ea5e9;--odd:#f59e0b;--border:#e5e5ea;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121214;--card:#1c1c1f;--text:#eee;--muted:#999;--border:#333}}
-:root[data-theme="dark"]{--bg:#121214;--card:#1c1c1f;--text:#eee;--muted:#999;--border:#333}
 *{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:16px;max-width:640px;margin-inline:auto}
-h1{font-size:1.3rem;margin:4px 0 12px}
-h2{font-size:.95rem;margin:22px 0 8px;color:var(--muted)}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
-label{font-size:.8rem;color:var(--muted);display:block;margin-bottom:4px}
-input,select{width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.95rem}
-.row{display:flex;gap:10px}.row>div{flex:1}
-#grid{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap;justify-content:center}
-#grid input{width:50px;height:50px;text-align:center;font-weight:600;border:2px solid var(--border);padding:0}
-button{border:none;border-radius:8px;padding:10px 14px;font-size:.9rem;cursor:pointer;background:var(--accent);color:#fff;width:100%}
-.dr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);gap:8px}
-.dr:last-child{border:none}
-.balls{display:flex;gap:5px;flex-wrap:wrap}
-.b{border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:.78rem;color:#fff}
-.b{background:var(--accent)}
-.lg{font-size:.75rem;color:var(--muted);margin-top:6px}
-.tr{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:.85rem}
-.tr .n{width:30px;text-align:center}.tr .bar{flex:1;height:10px;background:var(--border);border-radius:6px;overflow:hidden}
-.tr .bar i{display:block;height:100%;background:var(--accent)}.tr .c{width:44px;text-align:right;color:var(--muted)}
-.split{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:8px 0;font-size:.8rem;color:#fff}
-.split span{display:flex;align-items:center;justify-content:center}
-.empty{color:var(--muted);font-size:.85rem;text-align:center;padding:10px}
-.stat{display:flex;justify-content:space-between;font-size:.85rem;padding:4px 0}
+html{font-size:15px;-webkit-text-size-adjust:100%}
+body{margin:0;background:#E9E9E9;font-family:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif;color:#1A1A1A}
+button,input,select,textarea{font-family:inherit}
+.app{max-width:520px;min-height:100vh;margin:0 auto;background:#F5F5F5;position:relative;padding-bottom:110px;box-shadow:0 0 40px rgba(0,0,0,.08)}
+.top{display:flex;align-items:center;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top,0px)) 10px 4px}
+.ibtn{width:44px;height:44px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;padding:0}
+.brand{display:flex;align-items:center;gap:6px;font-size:1.45rem;font-weight:800}
+.screen{display:none;padding:6px 16px 0}
+.screen.on{display:block}
+.perbar{display:none;padding:2px 16px 0}
+.perbar.on{display:block}
+.perbar label{display:block;font-size:.8rem;color:#6A6A6A;margin:4px 0 4px}
+.shead{display:flex;align-items:center;gap:8px;margin:2px 0 10px}
+.back{width:44px;height:44px;border:0;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;flex:none}
+.stitle{font-size:1.35rem;font-weight:800;flex:1}
+.chip{background:#1A1A1A;color:#fff;border-radius:999px;padding:6px 12px;font-size:.8rem;font-weight:600;white-space:nowrap;max-width:48%;overflow:hidden;text-overflow:ellipsis}
+.sub{font-size:.85rem;color:#4A4A4A;margin:0 0 10px}
+.hero{background:#ECECEC;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.hrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.h1{font-size:1.1rem;font-weight:800}
+.hsub{font-size:.85rem;color:#4A4A4A;margin-top:2px}
+.hbtns{display:flex;flex-direction:column;gap:6px;align-items:stretch;flex:none}
+.pill{border:0;border-radius:999px;min-height:40px;padding:0 14px;font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;color:#fff}
+.pill.dark{background:#1A1A1A}.pill.red{background:#D3144A;font-weight:600}
+.hballs{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.hballs .b{width:38px;height:38px;background:#FFB020;font-weight:800;font-size:.95rem}
+.h3{font-size:1.2rem;font-weight:800;margin:16px 0 10px;text-align:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fc{border:0;background:#fff;border-radius:20px;min-height:112px;box-shadow:0 6px 16px rgba(0,0,0,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-weight:600;font-size:1rem;color:#1A1A1A;cursor:pointer;padding:10px;text-align:center}
+.ycard{background:#ECECEC;border-radius:20px;padding:16px;display:flex;justify-content:center;margin-top:14px}
+.btn{border:0;border-radius:14px;min-height:44px;padding:0 22px;background:#F7C531;color:#2A2200;font-weight:800;font-size:.95rem;cursor:pointer;width:100%}
+.btn.ghost{background:#fff;color:#1A1A1A;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.card{background:#fff;border-radius:20px;padding:16px;box-shadow:0 6px 16px rgba(0,0,0,.06);margin-bottom:14px}
+.card>.ct{font-size:.95rem;font-weight:800;margin:0 0 8px}
+label{display:block;font-size:.8rem;color:#6A6A6A;margin:0 0 4px}
+input,select,textarea{width:100%;min-height:44px;padding:0 14px;border-radius:12px;border:1px solid #DADADA;background:#fff;font-weight:600;font-size:.95rem;color:#1A1A1A}
+textarea{padding:10px 14px;min-height:110px}
+input:focus,select:focus,textarea:focus{outline:2px solid #D3144A;border-color:#D3144A}
+.perbar select{background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.08);border:0}
+.mt{margin-top:10px}
+/* éléments générés par le script */
+.balls{display:flex;gap:6px;flex-wrap:wrap}
+.b{border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:800;color:#2A1A00;background:#FFB020}
+.pred .b{background:#D3144A;color:#fff}
+.lg{font-size:.8rem;color:#6A6A6A;margin-top:6px}
+.dr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #EEE;gap:8px}
+.dr:last-child{border:0}
+.tr{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:.9rem}
+.tr .n{width:34px;text-align:center}
+.tr .bar{flex:1;height:12px;background:#ECECEC;border-radius:7px;overflow:hidden}
+.tr .bar i{display:block;height:100%;background:#D3144A;border-radius:7px}
+.tr .c{width:44px;text-align:right;color:#6A6A6A}
+.stat{display:flex;justify-content:space-between;gap:10px;font-size:.9rem;padding:5px 0}
+.empty{color:#6A6A6A;font-size:.9rem;text-align:center;padding:12px}
+#games a{display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:12px 14px;margin-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,.06);color:#1A1A1A;text-decoration:none;min-height:56px}
+#games a.on{outline:2px solid #D3144A}
+#games .gn{width:34px;height:34px;border-radius:50%;background:#ECECEC;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex:none}
+#games a.on .gn{background:#D3144A;color:#fff}
+#games .gt{font-weight:600;font-size:1rem;flex:1}
+#games .gc{font-size:.8rem;color:#6A6A6A}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;height:82px;background:#fff;border-radius:26px 26px 0 0;box-shadow:0 -6px 18px rgba(0,0,0,.06);display:flex;justify-content:space-around;align-items:flex-end;padding:0 8px calc(10px + env(safe-area-inset-bottom,0px));z-index:20}
+.navb{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;width:64px;min-height:48px;font-size:.75rem;color:#6A6A6A;cursor:pointer;padding:0}
+.navb.on{color:#D3144A;font-weight:600}
+.navb svg{stroke:currentColor}
+.gap{width:64px}
+.flash{position:absolute;left:50%;margin-left:-34px;top:-26px;width:68px;height:68px;border-radius:50%;border:0;background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.flash.on{background:#D3144A}.flash.on svg{stroke:#fff}
+.hot{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:0;background:#fff;border-radius:20px;box-shadow:0 6px 16px rgba(0,0,0,.08);padding:14px 16px;margin-top:14px;cursor:pointer;text-align:left;font-family:inherit}
+.hot-t{color:#FF1A1A;font-weight:800;font-size:1.25rem;letter-spacing:.02em;display:block}
+.hot-s{display:block;font-size:.8rem;color:#6A6A6A;margin-top:3px}
+.hot-b{display:flex;gap:12px;flex:none}
+.hot-b>div{text-align:center}
+.hot-b .b{width:40px;height:40px;font-size:1rem}
+.hot-b .n{font-size:.75rem;color:#6A6A6A;margin-top:3px;font-weight:600}
+.big2{display:flex;gap:18px;justify-content:center;margin:6px 0 14px}
+.big2>div{text-align:center}
+.big2 .b{width:64px;height:64px;font-size:1.5rem}
+.big2 .n{font-weight:800;margin-top:6px;font-size:.95rem}
+.big2 .lg{margin-top:2px}
 </style>
 </head>
 <body>
-<h1>🎯 Analyse des jeux</h1>
+<div class="app">
+<header class="top">
+<button class="ibtn" aria-label="Choisir un jeu" onclick="go('games')"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+<div class="brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="#D3144A" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>Analyse des jeux</div>
+<button class="ibtn" aria-label="Administration" onclick="go('admin')"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3.2"/><path d="M6 19c1.5-3 4-4 6-4s4.5 1 6 4"/></svg></button>
+</header>
+<div class="perbar" id="perbar"><label for="per">Période d'analyse</label>
+<select id="per" onchange="periodChanged()"><option value="7">7 derniers jours</option><option value="14">14 derniers jours</option><option value="30">30 derniers jours</option><option value="90">90 derniers jours</option><option value="all" selected>Tous les tirages</option></select></div>
 
-<div class="card">
-<label>Jeu (chaque jeu a sa propre base)</label>
-<select id="sel" onchange="setCur(this.value)"></select>
-<div class="lg" id="tot"></div>
+<section class="screen on" id="sc-home">
+<div class="hero">
+<div class="hrow">
+<div><div class="h1">Résultat du jour</div><div class="hsub"><span id="gtitle"></span> · <span id="hdate"></span></div></div>
+<div class="hbtns"><button class="pill dark" onclick="go('games')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>LES JEUX</button><button class="pill red" onclick="seeAll()">Tout voir<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>
 </div>
-
-<div class="card"><div class="row">
-<div><label>Numéros par tirage</label><input type="number" id="cnt" min="1" max="15" value="5"></div>
-<div><label>Numéro maximum</label><input type="number" id="mx" min="5" max="99" value="90"></div>
-</div></div>
-
-<div class="card">
-<button id="genBtn" style="background:transparent;color:var(--accent);border:1px solid var(--accent)" onclick="gen()">🎲 Générer des tirages aléatoires (90 derniers jours)</button>
-<div class="lg" id="gm">Remplit les 10 tirages pour chaque jour, sans toucher aux jours déjà saisis.</div>
+<div class="hballs" id="hres"></div>
+<div class="lg" id="tot" style="margin:0"></div>
 </div>
-
-<div class="card">
-<label id="lbl">Nouveau tirage</label>
-<div id="grid"></div>
-<button id="addBtn" onclick="add()">➕ Ajouter ce tirage</button>
+<button class="hot" onclick="go('hot')" aria-label="Chaud du jour : les 2 numéros les plus tirés">
+<span><span class="hot-t">CHAUD DU JOUR</span><span class="hot-s">Les 2 numéros les plus tirés · <span id="hotsub"></span></span></span>
+<span class="hot-b" id="hotballs"></span>
+</button>
+<div class="h3">LA CHANCE EST AVEC NOUS</div>
+<div class="grid2">
+<button class="fc" onclick="go('hist')"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#D3144A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Historique 7 jours</button>
+<button class="fc" onclick="go('top')"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2B3FD6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H4v1a4 4 0 0 0 4 4M16 6h4v1a4 4 0 0 1-4 4M12 13v4M8 20h8"/></svg>Les plus joués</button>
+<button class="fc" onclick="go('duos')"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2E8B57" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="5"/><circle cx="16" cy="9" r="5"/><circle cx="12" cy="16" r="5"/></svg>Duos, triplés, quadruplés</button>
+<button class="fc" onclick="go('old')"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#B86E00" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10h14V9M10 13h4"/></svg>Anciens résultats</button>
 </div>
+<div class="ycard"><button class="btn" style="width:auto" onclick="go('pred')">Prédiction</button></div>
+</section>
 
-<h2>Historique · <span class="nm"></span> (<span id="nb">0</span> au total) · 7 derniers jours</h2>
+<section class="screen" id="sc-hot">
+<div class="shead"><button class="back" onclick="go('home')" aria-label="Retour"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="stitle" style="color:#FF1A1A">CHAUD DU JOUR</div></div>
+<div class="sub">Numéros les plus tirés, tous les jeux · <span id="hotlabel"></span></div>
+<div class="card" id="hotlist"></div>
+</section>
+
+<section class="screen" id="sc-games">
+<div class="shead"><button class="back" onclick="go('home')" aria-label="Retour"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="stitle">Les jeux</div></div>
+<div class="sub">Chaque jeu a sa propre base de données.</div>
+<div id="games"></div>
+</section>
+
+<section class="screen" id="sc-hist">
+<div class="shead"><button class="back" onclick="go('home')" aria-label="Retour"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="stitle">Historique 7 jours</div><div class="chip nm"></div></div>
+<div class="sub"><span id="nb">0</span> tirage(s) au total · 7 derniers jours</div>
 <div class="card" id="hist"></div>
+</section>
 
-<h2>Numéros les plus joués sur 30 jours · <span class="nm"></span></h2>
+<section class="screen" id="sc-top">
+<div class="shead"><button class="back" onclick="go('home')" aria-label="Retour"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="stitle">Les plus joués</div><div class="chip nm"></div></div>
+<div class="sub">Numéros les plus joués · <span id="plabel"></span></div>
 <div class="card" id="top"></div>
+</section>
 
-<h2>Recherche · <span class="nm"></span></h2>
-<div class="card">
-<label>Numéro fixé</label>
-<input type="number" id="fx" min="1" placeholder="Ex : 7" oninput="combo()">
-<div id="cb" style="margin-top:12px"></div>
+<section class="screen" id="sc-duos">
+<div class="shead"><button class="back" onclick="go('home')" aria-label="Retour"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="stitle">Duos, triplés, quadruplés</div><div class="chip nm"></div></div>
+
+<div class="card"><label for="dq">Rechercher dans les duos, triplés et quadruplés</label>
+<input type="text" id="dq" inputmode="numeric" placeholder="Ex : 65 ou 65 21" oninput="duos()">
+<div id="du" class="mt"></div></div>
+</section>
+
+<section class="screen" id="sc-old">
+<div class="shead"><button class="back" onclick="go('home')" aria-label="Retour"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="stitle">Anciens résultats</div></div>
+<div class="sub">Les résultats des 10 jeux à une date donnée.</div>
+<div class="card"><label for="sd">Date</label><input type="date" id="sd">
+<button class="btn mt" onclick="searchDate()">Recherche ancien résultat</button>
+<div id="sr" class="mt"><div class="empty">Choisis une date puis touche le bouton.</div></div></div>
+</section>
+
+<section class="screen" id="sc-pred">
+<div class="shead"><button class="back" onclick="go('home')" aria-label="Retour"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="stitle">Prédiction</div><div class="chip nm"></div></div>
+
+<div class="card pred"><label for="pn">Nombre de numéros</label>
+<select id="pn" onchange="pastPred()"><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option></select>
+<button class="btn mt" onclick="predict()">Prédiction</button>
+<div id="pr" class="mt"><div class="empty">Touche « Prédiction » pour analyser les tirages de ce jeu.</div></div></div>
+<div class="card pred"><div class="ct">Prédiction passée</div><div id="ppastres"></div></div>
+</section>
+
+<section class="screen" id="sc-stats">
+<div class="shead"><button class="back" onclick="go('home')" aria-label="Retour"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="stitle">Statistiques</div><div class="chip nm"></div></div>
+
+<div class="card"><div class="ct">Numéros non tirés · <span id="mlabel"></span></div><div id="nd"></div></div>
+<div class="card"><div class="ct">Recherche d'un numéro</div>
+<label for="nh">Numéro</label><input type="number" id="nh" min="1" max="90" placeholder="Ex : 7" oninput="numHistory()">
+<div id="nhr" class="mt"><div class="empty">Entre un numéro puis touche le bouton.</div></div></div>
+<div class="card"><div class="ct">Recherche d'une paire · tous les jeux · <span id="pairlabel"></span></div>
+<label for="pp">Deux numéros</label><input type="text" id="pp" inputmode="numeric" placeholder="Ex : 12 45" oninput="pairSearch()">
+<div id="ppr" class="mt"><div class="empty">Entre deux numéros (de 1 à 90).</div></div></div>
+</section>
+
+<section class="screen" id="sc-admin">
+<div class="shead"><button class="back" onclick="go('home')" aria-label="Retour"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="stitle">Administration</div></div>
+<div class="sub">Mise à jour et export protégés par mot de passe.</div>
+<div class="card"><label for="imp">Importer mes vrais numéros</label>
+<div class="lg" style="margin:0 0 8px">Une ligne par tirage : <b>date ; jeu ; numéros</b>. Ex : 15/09/2026 ; GHANA ; 12 45 7 33 80. Sans le jeu (date ; numéros), la ligne va dans le jeu choisi. Dates : jj/mm/aaaa ou aaaa-mm-jj.</div>
+<textarea id="imp" placeholder="15/09/2026 ; GHANA ; 12 45 7 33 80&#10;15/09/2026 ; 01*Digital 7h ; 3 18 29 54 71"></textarea>
+<input type="file" id="impf" accept=".txt,.csv" class="mt" style="padding:10px 14px">
+<input type="password" id="pw" placeholder="Mot de passe (mise à jour et export)" autocomplete="off" class="mt">
+<button class="btn mt" onclick="miseAJour()">Mise à jour</button>
+<button class="btn ghost mt" onclick="exportAll()">Exporter (tous les jeux, .txt)</button>
+<textarea id="exp" readonly style="display:none;margin-top:10px"></textarea>
+<div class="lg" id="im"></div></div>
+</section>
+
+<nav class="nav" aria-label="Navigation principale">
+<button class="navb on" data-s="home" onclick="go('home')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"/></svg>Accueil</button>
+<button class="navb" data-s="games" onclick="go('games')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>Jeux</button>
+<div class="gap"></div>
+<button class="navb" data-s="stats" onclick="go('stats')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Stats</button>
+<button class="navb" data-s="admin" onclick="go('admin')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Admin</button>
+<button class="flash" id="flashbtn" aria-label="Prédiction" onclick="go('pred')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D3144A" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></button>
+</nav>
 </div>
-
-<h2>Duos, triplés et quadruplés · <span class="nm"></span></h2>
-<div class="card" id="du"></div>
-
 
 <script>
-var NAMES=['Digital 7h','Digital 8h','Digital 21h','Digital 22h','Première heure','Fortune','Baraka','Afterwork','GHANA','Weekend'];
+var NAMES=['01*Digital 7h','02*Digital 8h','03*Digital 21h','04*Digital 22h','05*Digital 23h','06*Première heure','07*jeux 13h','08*jeux 16h','09*Afterwork','10*GHANA'];
+var MID={'07*jeux 13h':'07*jeux*07','08*jeux 16h':'08*jeux*08'};
+var LEG={'01*Digital 7h':'Digital 7h','02*Digital 8h':'Digital 8h','03*Digital 21h':'Digital 21h','04*Digital 22h':'Digital 22h','06*Première heure':'Première heure','07*jeux 13h':'Fortune','08*jeux 16h':'Baraka','09*Afterwork':'Afterwork','10*GHANA':'GHANA'};
 var store={},cur=NAMES[0],draws=[];
-function sv(n){try{localStorage.setItem('loto_d_'+n,JSON.stringify(store[n]))}catch(e){}}
-NAMES.forEach(function(n){var a=[];try{var s=localStorage.getItem('loto_d_'+n)||(n==='Weekend'?localStorage.getItem('loto_d_Tirage 10'):null);if(s)a=(JSON.parse(s)||[]).map(function(d){if(d.t==='Tirage 10')d.t='Weekend';return d})}catch(e){}store[n]=a});
+function sv(n){try{localStorage.setItem('loto_d_'+n,JSON.stringify(store[n].filter(function(d){return !d.h})))}catch(e){}}
+NAMES.forEach(function(n){var a=[];try{var s=localStorage.getItem('loto_d_'+n);if(s===null&&MID[n])s=localStorage.getItem('loto_d_'+MID[n]);if(s===null&&LEG[n])s=localStorage.getItem('loto_d_'+LEG[n]);if(s)a=(JSON.parse(s)||[]).map(function(d){d.t=n;return d})}catch(e){}store[n]=a});
 try{ // reprise des anciens tirages nommés
   var old=localStorage.getItem('loto_v2');
   if(old&&!localStorage.getItem('loto_migrated')){
@@ -95,97 +228,303 @@ try{ // reprise des anciens tirages nommés
     NAMES.forEach(function(n){store[n].sort(function(a,b){return a.d<b.d?1:-1});sv(n)});
     localStorage.setItem('loto_migrated','1');
   }
-  var sc=localStorage.getItem('loto_sel');if(sc==='Tirage 10')sc='Weekend';if(sc&&store[sc])cur=sc;
+  var sc=localStorage.getItem('loto_sel');if(sc&&!store[sc]){for(var z in MID)if(MID[z]===sc)sc=z}if(sc&&!store[sc]){for(var q in LEG)if(LEG[q]===sc)sc=q}if(sc&&store[sc])cur=sc;
 }catch(e){}
 draws=store[cur];
+function jour(d){var j=new Date(d).toLocaleDateString('fr-FR',{weekday:'long'});return j.charAt(0).toUpperCase()+j.slice(1)}
 function dk(d){return new Date(d).toLocaleDateString('fr-FR')}
 function done(n){var k=dk(new Date());return store[n].some(function(d){return dk(d.d)===k})}
-function setCur(n){cur=n;draws=store[n];try{localStorage.setItem('loto_sel',n)}catch(e){}grid();render()}
-function cfg(){return{c:parseInt(document.getElementById('cnt').value)||5,m:parseInt(document.getElementById('mx').value)||90}}
-function grid(){var g=document.getElementById('grid');g.innerHTML='';for(var i=0;i<cfg().c;i++){var p=document.createElement('input');p.type='number';p.placeholder='#'+(i+1);g.appendChild(p)}}
-document.getElementById('cnt').addEventListener('change',function(){grid();render()});
-document.getElementById('mx').addEventListener('change',render);
-function add(){
-  if(done(cur))return;
-  var m=cfg().m,ins=document.querySelectorAll('#grid input'),nums=[];
-  for(var i=0;i<ins.length;i++){var v=parseInt(ins[i].value);if(!v||v<1||v>m){alert('Remplis tous les numéros (1 à '+m+').');return}nums.push(v)}
-  draws.unshift({n:nums,d:new Date().toISOString(),t:cur});sv(cur);
-  ins.forEach(function(x){x.value=''});render();
-}
-function gen(){
-  var c=cfg().c,m=cfg().m,added=0;
-  NAMES.forEach(function(n){
-    for(var b=90;b>=1;b--){
-      var t0=new Date(),dt=new Date(t0.getFullYear(),t0.getMonth(),t0.getDate()-b,12,0),k=dk(dt);
-      if(store[n].some(function(d){return dk(d.d)===k}))continue;
-      var set=[];while(set.length<c)set.push(1+Math.floor(Math.random()*m));
-      store[n].push({n:set,d:dt.toISOString(),t:n,s:1});added++;
-    }
-    store[n].sort(function(a,b){return a.d<b.d?1:-1});sv(n);
+function setCur(n){cur=n;draws=store[n];try{localStorage.setItem('loto_sel',n)}catch(e){}resetResults();render()}
+function cfg(){return{c:5,m:90}}
+function norm(t){return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
+function pdate(t){t=t.trim();var m=t.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})$/),y,mo,d;
+  if(m){y=+m[1];mo=+m[2];d=+m[3]}else{m=t.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{4})$/);if(!m)return null;d=+m[1];mo=+m[2];y=+m[3]}
+  var dt=new Date(y,mo-1,d,12,0);return(dt.getFullYear()===y&&dt.getMonth()===mo-1&&dt.getDate()===d)?dt:null}
+function applyShared(txt){
+  if(!txt)return;var add=0;
+  txt.split(/\r?\n/).forEach(function(line){
+    line=line.trim();if(!line)return;
+    var p=line.split(/[;|\t]/);if(p.length<3)return;
+    var dt=pdate(p[0]),gn=norm(p[1]);
+    var game=NAMES.filter(function(n){return norm(n)===gn||norm(n.replace(/^\d+\*/,''))===gn})[0];
+    var a=(p.slice(2).join(' ').match(/\d+/g)||[]).map(Number);
+    if(!dt||!game||!a.length||a.some(function(x){return x<1||x>90}))return;
+    var k=dk(dt),arr=store[game],ix=-1;
+    arr.forEach(function(d,j){if(dk(d.d)===k)ix=j});
+    if(ix>=0){if(!arr[ix].s&&!arr[ix].h)return;arr.splice(ix,1)}
+    arr.push({n:a,d:dt.toISOString(),t:game,h:1});add++;
   });
+  if(add){NAMES.forEach(function(n){store[n].sort(function(a,b){return a.d<b.d?1:-1})});render()}
+}
+function loadShared(){
+  if(typeof EMBED==='string')applyShared(EMBED);
+  if(!window.fetch)return;
+  fetch('donnees.txt',{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(applyShared).catch(function(){});
+}
+var SALT='jeux-export-v1',PWH='3ce6abc7eec8ba564803520530b53695b51b9b9f2ffd96680aa4a7557c562f7b';
+function checkPw(ok){
+  var im=document.getElementById('im'),pw=document.getElementById('pw');
+  if(!pw.value){im.textContent='Entre le mot de passe.';return}
+  if(!(window.crypto&&crypto.subtle)){im.textContent='Action impossible : connexion non sécurisée sur ce navigateur.';return}
+  var enc=new TextEncoder();
+  crypto.subtle.importKey('raw',enc.encode(pw.value),'PBKDF2',false,['deriveBits']).then(function(k){
+    return crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode(SALT),iterations:150000,hash:'SHA-256'},k,256);
+  }).then(function(bits){
+    var hex=Array.from(new Uint8Array(bits)).map(function(b){return ('0'+b.toString(16)).slice(-2)}).join('');
+    pw.value='';
+    if(hex!==PWH){im.textContent='Mot de passe incorrect.';return}
+    ok();
+  }).catch(function(){im.textContent='Vérification impossible.'});
+}
+function exportAll(){checkPw(doExport)}
+function miseAJour(){checkPw(importer)}
+function doExport(){
+  var im=document.getElementById('im'),rows=[];
+  NAMES.forEach(function(n){store[n].forEach(function(d){rows.push([d.d,n,d.n.join(' ')])})});
+  if(!rows.length){im.textContent='Aucune donnée à exporter.';return}
+  rows.sort(function(a,b){return a[0]<b[0]?-1:a[0]>b[0]?1:(a[1]<b[1]?-1:1)});
+  var txt=rows.map(function(r){return dk(r[0])+' ; '+r[1]+' ; '+r[2]}).join('\n')+'\n';
+  try{var b=new Blob([txt],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='export-jeux.txt';document.body.appendChild(a);a.click();a.remove()}catch(e){}
+  var t=document.getElementById('exp');t.style.display='block';t.value=txt;
+  im.textContent=rows.length+' tirage(s) exporté(s) (fichier export-jeux.txt téléchargé, texte copiable ci-dessus).';
+}
+function importer(){
+  var lines=document.getElementById('imp').value.split(/\r?\n/),mx=cfg().m,ok=0,rep=0,cor=0,same=0,bad=[];
+  lines.forEach(function(line,i){
+    line=line.trim();if(!line)return;
+    var p=line.split(/[;|\t]/),dt,game,nums;
+    if(p.length>=3){dt=pdate(p[0]);var gn=norm(p[1]);game=NAMES.filter(function(n){return norm(n)===gn||norm(n.replace(/^\d+\*/,''))===gn})[0];nums=p.slice(2).join(' ')}
+    else if(p.length===2){dt=pdate(p[0]);game=cur;nums=p[1]}
+    else{bad.push(i+1);return}
+    var a=(nums.match(/\d+/g)||[]).map(Number);
+    if(!dt||!game||!a.length||a.some(function(x){return x<1||x>mx})){bad.push(i+1);return}
+    var k=dk(dt),arr=store[game],ix=-1;
+    arr.forEach(function(d,j){if(dk(d.d)===k)ix=j});
+    if(ix>=0){var o=arr[ix];if(!o.s&&JSON.stringify(o.n)===JSON.stringify(a)){same++;return}if(o.s)rep++;else cor++;arr.splice(ix,1)}
+    arr.push({n:a,d:dt.toISOString(),t:game});ok++;
+  });
+  NAMES.forEach(function(n){store[n].sort(function(a,b){return a.d<b.d?1:-1});sv(n)});
   render();
-  document.getElementById('gm').textContent=added+' tirages aléatoires ajoutés (90 derniers jours).';
+  document.getElementById('im').textContent=ok+' enregistré(s)'+(cor?', dont '+cor+' corrigé(s)':'')+(rep?', dont '+rep+' aléatoire(s) remplacé(s)':'')+(same?', '+same+' déjà identique(s)':'')+(bad.length?', lignes invalides : '+bad.slice(0,10).join(', '):'')+'.';
 }
 function ball(n){return '<span class="b">'+n+'</span>'}
-function combo(){
-  var el=document.getElementById('cb'),v=parseInt(document.getElementById('fx').value),m=cfg().m;
-  if(!v){el.innerHTML='<div class="empty">Entre un numéro pour voir la combinaison.</div>';return}
-  if(v<1||v>m){el.innerHTML='<div class="empty">Numéro entre 1 et '+m+'.</div>';return}
-  var f={},c={},w=0;
-  draws.forEach(function(d){var has=d.n.indexOf(v)>-1;if(has)w++;d.n.forEach(function(x){f[x]=(f[x]||0)+1;if(has&&x!==v)c[x]=(c[x]||0)+1})});
-  if(!w){el.innerHTML='<div class="empty">Le '+v+' n\u2019est jamais sorti dans ce tirage.</div>';return}
-  var top=Object.keys(c).map(Number).sort(function(a,b){return c[b]-c[a]||f[b]-f[a]||a-b}).slice(0,cfg().c-1);
-  el.innerHTML='<div class="balls"><span class="b" style="background:var(--accent);outline:3px solid var(--accent);outline-offset:2px">'+v+'</span>'+top.map(ball).join('')+'</div><div class="lg">'+v+' fixé (sorti '+w+'×) + les '+top.length+' numéros le plus souvent sortis avec lui</div>'+top.map(function(x){return '<div class="stat"><span>'+x+' avec le '+v+'</span><b>'+c[x]+'×</b></div>'}).join('');
-}
 function duos(){
   var el=document.getElementById('du');
+  var q=(document.getElementById('dq').value.match(/\d+/g)||[]).map(Number),minc=q.length?1:2;
   var sd=function(d){return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})};
   var sec=function(sz,label){
     var m={};
-    draws.forEach(function(d){
+    pdr(draws,0).forEach(function(d){
       var u=d.n.filter(function(x,i){return d.n.indexOf(x)===i}).sort(function(a,b){return a-b});
       var rec=function(st,cur){if(cur.length===sz){var k=cur.join('-');(m[k]||(m[k]=[])).push(d.d);return}for(var i=st;i<u.length;i++)rec(i+1,cur.concat(u[i]))};
       rec(0,[]);
     });
-    var l=Object.keys(m).filter(function(k){return m[k].length>=2}).sort(function(a,b){return m[b].length-m[a].length||parseInt(a)-parseInt(b)});
+    var l=Object.keys(m).filter(function(k){return m[k].length>=minc&&(!q.length||q.every(function(x){return k.split('-').map(Number).indexOf(x)>-1}))}).sort(function(a,b){return m[b].length-m[a].length||parseInt(a)-parseInt(b)});
     var h='<div class="lg" style="margin:10px 0 6px"><b>'+label+'</b> \u00b7 '+l.length+(l.length>30?' (30 premiers)':'')+'</div>';
-    if(!l.length)return h+'<div class="empty" style="padding:2px">Aucun répété</div>';
+    if(!l.length)return h+'<div class="empty" style="padding:2px">'+(q.length?'Aucune combinaison':'Aucun répété')+'</div>';
     return h+l.slice(0,30).map(function(k){
       return '<div class="dr"><div class="balls">'+k.split('-').map(function(x){return ball(+x)}).join('')+'</div><div class="lg" style="margin:0;text-align:right"><b>'+m[k].length+' fois</b> : '+m[k].slice().sort().map(sd).join(', ')+'</div></div>';
     }).join('');
   };
-  el.innerHTML=sec(2,'Duos (2 numéros)')+sec(3,'Triplés (3 numéros)')+sec(4,'Quadruplés (4 numéros)');
+  var note=q.length?'<div class="lg" style="margin:0 0 4px">Combinaisons contenant <b>'+q.join(' ')+'</b> (sorties 1 fois ou plus)</div>':'';
+  el.innerHTML=note+sec(2,'Duos (2 numéros)')+sec(3,'Triplés (3 numéros)')+sec(4,'Quadruplés (4 numéros)');
+}
+function searchDate(){
+  var sr=document.getElementById('sr'),v=document.getElementById('sd').value;
+  if(!v){sr.innerHTML='<div class="empty">Choisis une date.</div>';return}
+  var dt=pdate(v);if(!dt){sr.innerHTML='<div class="empty">Date invalide.</div>';return}
+  var k=dk(dt),found=0;
+  var rows=NAMES.map(function(n){
+    var d=store[n].filter(function(x){return dk(x.d)===k})[0];
+    if(d)found++;
+    return '<div class="dr"><div style="font-size:.85rem;'+(n===cur?'font-weight:700;color:var(--accent)':'')+'">'+n+'</div>'+(d?'<div class="balls">'+d.n.map(ball).join('')+'</div>':'<div class="lg" style="margin:0">Aucun résultat</div>')+'</div>';
+  }).join('');
+  sr.innerHTML='<div class="lg" style="margin:0 0 6px"><b>'+k+'</b> · '+found+' jeu(x) avec résultat</div>'+(found?rows:'<div class="empty">Aucun tirage enregistré à cette date.</div>');
+}
+function predict(){
+  var N=parseInt(document.getElementById('pn').value)||5,out=document.getElementById('pr'),html='';
+  [cur].forEach(function(g){
+    var ds=pdr(store[g],0).sort(function(a,b){return a.d<b.d?1:-1});
+    var title='<div style="font-weight:'+(g===cur?'700':'600')+';margin:12px 0 6px'+(g===cur?';color:var(--accent)':'')+'">'+g+' <span class="lg">\u00b7 '+ds.length+' tirage(s)</span></div>';
+    if(ds.length<10){html+=title+'<div class="empty" style="padding:2px">Pas assez de tirages sur cette période (minimum 10).</div>';return}
+    var W=0,occ={},p0=5/90,m=60;
+    ds.forEach(function(d,i){var w=1;W+=w;d.n.filter(function(x,j){return d.n.indexOf(x)===j}).forEach(function(x){occ[x]=(occ[x]||0)+w})});
+    var l=[];for(var x=1;x<=90;x++)l.push({x:x,p:((occ[x]||0)+m*p0)/(W+m)});
+    l.sort(function(a,b){return b.p-a.p||a.x-b.x});
+    html+=title+'<div class="balls">'+l.slice(0,N).map(function(o){return '<span style="text-align:center">'+ball(o.x)+'<div class="lg" style="margin:2px 0 0"><b>'+(o.p*100).toFixed(1).replace('.',',')+' %</b></div></span>'}).join('')+'</div>';
+  });
+  var all=[];NAMES.forEach(function(g){pdr(store[g],0).forEach(function(d){all.push(d)})});
+  if(all.length>=10){
+    var W2=0,o2={},q0=5/90,mm=60;
+    all.forEach(function(d){W2++;d.n.filter(function(x,j){return d.n.indexOf(x)===j}).forEach(function(x){o2[x]=(o2[x]||0)+1})});
+    var l2=[];for(var y=1;y<=90;y++)l2.push({x:y,p:((o2[y]||0)+mm*q0)/(W2+mm)});
+    l2.sort(function(a,b){return b.p-a.p||a.x-b.x});
+    html+='<div style="border-top:1px solid var(--border);margin:16px 0 6px"></div><div style="font-weight:700;margin:6px 0">Tous les jeux ensemble <span class="lg">\u00b7 '+all.length+' tirage(s)</span></div><div class="balls">'+l2.slice(0,N).map(function(o){return '<span style="text-align:center">'+ball(o.x)+'<div class="lg" style="margin:2px 0 0"><b>'+(o.p*100).toFixed(1).replace('.',',')+' %</b></div></span>'}).join('')+'</div>';
+  }
+  out.innerHTML=html+'<div class="lg" style="margin-top:14px">Estimation calculée sur tous les tirages enregistrés, d\u2019abord ceux de ce jeu, puis ceux des 10 jeux réunis (chaque tirage compte pareil). Au hasard pur, chaque numéro a environ 5,6 % de chances d\u2019être tiré à chaque tirage : ces pourcentages n\u2019assurent aucun résultat.</div>';
+}
+function pdr(arr,def){
+  var v=document.getElementById('per').value,n=(v==='def')?def:(v==='all'?0:parseInt(v));
+  if(!n)return arr.slice();
+  var t=new Date(),cut=new Date(t.getFullYear(),t.getMonth(),t.getDate()-(n-1));
+  return arr.filter(function(d){return new Date(d.d)>=cut});
+}
+function plabel(def){var v=document.getElementById('per').value;return v==='def'?(def?'30 derniers jours':'tous les tirages'):(v==='all'?'tous les tirages':v+' derniers jours')}
+function resetResults(){
+  document.getElementById('pr').innerHTML='<div class="empty">Touche « Prédiction » pour analyser les tirages de ce jeu.</div>';
+  document.getElementById('nhr').innerHTML='<div class="empty">Entre un numéro puis touche le bouton.</div>';
+}
+function periodChanged(){resetResults();render()}
+function numHistory(){
+  var el=document.getElementById('nhr'),v=parseInt(document.getElementById('nh').value);
+  if(!v||v<1||v>90){el.innerHTML='<div class="empty">Entre un numéro de 1 à 90.</div>';return}
+  var ds=pdr(draws,0).sort(function(a,b){return a.d<b.d?1:-1});
+  if(!ds.length){el.innerHTML='<div class="empty">Aucun tirage pour ce jeu sur cette période.</div>';return}
+  var idx=[];ds.forEach(function(d,i){if(d.n.indexOf(v)>-1)idx.push(i)});
+  if(!idx.length){el.innerHTML='<div class="balls" style="margin-bottom:8px">'+ball(v)+'</div><div class="empty">Jamais sorti sur '+ds.length+' tirage(s).</div>';return}
+  var gaps=[];for(var i=1;i<idx.length;i++)gaps.push(idx[i]-idx[i-1]);
+  var avg=gaps.length?gaps.reduce(function(a,b){return a+b},0)/gaps.length:null;
+  var pct=(idx.length/ds.length*100).toFixed(1).replace('.',',');
+  el.innerHTML='<div class="balls" style="margin-bottom:8px">'+ball(v)+'</div>'+
+    '<div class="stat"><span>Sorti</span><b>'+idx.length+' fois sur '+ds.length+' ('+pct+' %)</b></div>'+
+    '<div class="stat"><span>Dernière sortie</span><b>'+dk(ds[idx[0]].d)+(idx[0]===0?' (dernier tirage)':' · il y a '+idx[0]+' tirage(s)')+'</b></div>'+
+    (avg!==null?'<div class="stat"><span>Écart moyen entre deux sorties</span><b>'+avg.toFixed(1).replace('.',',')+' tirages</b></div>':'')+
+    withBlock(v,ds,idx)+
+    '<div class="lg" style="margin:12px 0 4px">Dates de sortie'+(idx.length>30?' (30 plus récentes)':'')+'</div>'+
+    '<div class="lg" style="margin:0;line-height:1.7">'+idx.slice(0,30).map(function(i){return dk(ds[i].d)}).join(' \u00b7 ')+'</div>';
+}
+function withBlock(v,ds,idx){
+  var co={};
+  idx.forEach(function(i){ds[i].n.filter(function(x,j){return ds[i].n.indexOf(x)===j&&x!==v}).forEach(function(x){co[x]=(co[x]||0)+1})});
+  var f={};ds.forEach(function(d){d.n.filter(function(x,j){return d.n.indexOf(x)===j}).forEach(function(x){f[x]=(f[x]||0)+1})});
+  var l=Object.keys(co).map(Number).sort(function(a,b){return co[b]-co[a]||f[b]-f[a]||a-b});
+  if(!l.length)return '';
+  var fixed='<span class="b" style="outline:3px solid var(--accent);outline-offset:2px">'+v+'</span>';
+  return '<div class="lg" style="margin:12px 0 6px"><b>Le '+v+' fixé + les '+Math.min(4,l.length)+' qui sortent le plus avec lui</b></div>'+
+    '<div class="balls">'+fixed+l.slice(0,4).map(ball).join('')+'</div>'+
+    '<div class="lg" style="margin:12px 0 6px"><b>Numéros sortis avec le '+v+'</b> \u00b7 '+l.length+' différents'+(l.length>20?' (20 premiers)':'')+'</div>'+
+    '<div class="balls">'+l.slice(0,20).map(function(x){return '<span style="text-align:center">'+ball(x)+'<div class="lg" style="margin:2px 0 0"><b>'+co[x]+'\u00d7</b></div></span>'}).join('')+'</div>';
+}
+function missing(){
+  var el=document.getElementById('nd');
+  document.getElementById('mlabel').textContent=plabel(30);
+  var ds=pdr(draws,30);
+  if(!ds.length){el.innerHTML='<div class="empty">Aucun tirage sur cette période.</div>';return}
+  var seen={};
+  ds.forEach(function(d){d.n.forEach(function(x){seen[x]=1})});
+  var miss=[];for(var x=1;x<=90;x++)if(!seen[x])miss.push(x);
+  var h='<div class="lg" style="margin:0 0 8px"><b>'+miss.length+' numéro(s) sur 90</b> non tirés \u00b7 '+ds.length+' tirage(s) analysé(s)</div>';
+  if(!miss.length){el.innerHTML=h+'<div class="empty" style="padding:2px">Tous les numéros sont sortis.</div>';return}
+  el.innerHTML=h+'<div class="balls">'+miss.map(ball).join('')+'</div>';
+}
+function pairSearch(){
+  var el=document.getElementById('ppr');
+  document.getElementById('pairlabel').textContent=plabel(0);
+  var a=(document.getElementById('pp').value.match(/\d+/g)||[]).map(Number).filter(function(x,i,ar){return ar.indexOf(x)===i});
+  if(a.length!==2||a.some(function(x){return x<1||x>90})){el.innerHTML='<div class="empty">Entre deux numéros différents, de 1 à 90.</div>';return}
+  var fmt=function(d){return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'2-digit'})};
+  var tot=0,both=0,rows=[],tag='(BANKA) '+a[0]+' '+a[1];
+  NAMES.forEach(function(g){
+    var ds=pdr(store[g],0).sort(function(x,y){return x.d<y.d?1:-1}),hit=[];
+    ds.forEach(function(d){tot++;if(d.n.indexOf(a[0])>-1&&d.n.indexOf(a[1])>-1){both++;hit.push(d.d)}});
+    if(hit.length)rows.push({g:g,n:hit.length,d:hit});
+  });
+  rows.sort(function(x,y){return y.n-x.n||NAMES.indexOf(x.g)-NAMES.indexOf(y.g)});
+  var h='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px"><b>(BANKA)</b><div class="balls">'+a.map(ball).join('')+'</div></div>'+
+    '<div class="stat"><span>Paire sortie ensemble</span><b>'+both+' fois sur '+tot+' tirages</b></div>';
+  if(!rows.length){el.innerHTML=h+'<div class="empty" style="padding:6px">Cette paire n\u2019est jamais sortie ensemble sur cette période.</div>';return}
+  el.innerHTML=h+'<div class="lg" style="margin:10px 0 4px"><b>Dates d\u2019apparition de la paire, par jeu</b> \u00b7 '+rows.length+' jeu(x)</div>'+rows.map(function(r){
+    return '<div class="dr" style="flex-direction:column;align-items:flex-start;gap:3px"><div style="font-size:.9rem;font-weight:700">'+r.g+'</div>'+
+      '<div class="lg" style="margin:0"><b>'+tag+'</b> \u00b7 '+r.n+' fois : '+r.d.slice(0,15).map(fmt).join(', ')+(r.d.length>15?' …':'')+'</div></div>';
+  }).join('');
+}
+function pastPred(){
+  var el=document.getElementById('ppastres'),N=parseInt(document.getElementById('pn').value)||5;
+  var all=store[cur];
+  if(!all.length){el.innerHTML='<div class="empty">Aucun tirage pour ce jeu.</div>';return}
+  var last=all.reduce(function(a,d){return d.d>a?d.d:a},'');
+  var ld=new Date(last),cut=new Date(ld.getFullYear(),ld.getMonth(),ld.getDate()-1,23,59,59);
+  var ds=all.filter(function(d){return new Date(d.d)<=cut});
+  var head='<div class="lg" style="margin:0 0 8px"><b>Prédiction de la veille</b> \u00b7 <b>'+dk(cut)+'</b> \u00b7 '+ds.length+' tirage(s)</div>';
+  if(ds.length<10){el.innerHTML=head+'<div class="empty" style="padding:2px">Pas assez de tirages (minimum 10).</div>';return}
+  var W=0,o={};
+  ds.forEach(function(d){W++;d.n.filter(function(x,j){return d.n.indexOf(x)===j}).forEach(function(x){o[x]=(o[x]||0)+1})});
+  var l=[];for(var y=1;y<=90;y++)l.push({x:y,p:((o[y]||0)+60*5/90)/(W+60)});
+  l.sort(function(a,b){return b.p-a.p||a.x-b.x});
+  el.innerHTML=head+'<div class="balls">'+l.slice(0,N).map(function(q){return '<span style="text-align:center">'+ball(q.x)+'<div class="lg" style="margin:2px 0 0"><b>'+(q.p*100).toFixed(1).replace('.',',')+' %</b></div></span>'}).join('')+'</div>';
+}
+var cs='home';
+function go(n){
+  cs=n;
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id==='sc-'+n)});
+  var map={hist:'home',top:'home',duos:'home',old:'home',pred:'pred'},nv=map[n]||n;
+  document.querySelectorAll('.navb').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-s')===nv)});
+  document.getElementById('flashbtn').classList.toggle('on',n==='pred');
+  document.getElementById('perbar').className='perbar'+((n==='home'||n==='hot'||n==='top'||n==='duos'||n==='pred'||n==='stats')?' on':'');
+  window.scrollTo(0,0);
+}
+function lastDateAll(){var ml='';NAMES.forEach(function(g){store[g].forEach(function(d){if(d.d>ml)ml=d.d})});return ml}
+function renderHome(){
+  var ds=draws.slice().sort(function(a,b){return a.d<b.d?1:-1}),el=document.getElementById('hres'),dt=document.getElementById('hdate');
+  if(!ds.length){el.innerHTML='<div class="lg" style="margin:0">Aucun tirage pour ce jeu.</div>';dt.textContent='';return}
+  dt.textContent=dk(ds[0].d);
+  el.innerHTML=ds[0].n.map(ball).join('');
+}
+function seeAll(){
+  var ml=lastDateAll();
+  if(ml){var q=new Date(ml);document.getElementById('sd').value=q.getFullYear()+'-'+('0'+(q.getMonth()+1)).slice(-2)+'-'+('0'+q.getDate()).slice(-2);}
+  go('old');searchDate();
+}
+function hotRank(){
+  var c={},nd=0;
+  NAMES.forEach(function(g){pdr(store[g],30).forEach(function(d){nd++;uniq(d.n).forEach(function(x){c[x]=(c[x]||0)+1})})});
+  var l=Object.keys(c).map(Number).sort(function(a,b){return c[b]-c[a]||a-b});
+  return {c:c,l:l,nd:nd};
+}
+function uniq(a){return a.filter(function(x,i){return a.indexOf(x)===i})}
+function renderHot(){
+  var h=hotRank(),lab=plabel(30);
+  document.getElementById('hotsub').textContent=lab;
+  document.getElementById('hotlabel').textContent=lab+' · '+h.nd+' tirage(s)';
+  var b=document.getElementById('hotballs'),L=document.getElementById('hotlist');
+  if(!h.l.length){b.innerHTML='';L.innerHTML='<div class="empty">Aucun tirage sur cette période.</div>';return}
+  var top=h.l.slice(0,2);
+  b.innerHTML=top.map(function(x){return '<div>'+ball(x)+'<div class="n">'+h.c[x]+'\u00d7</div></div>'}).join('');
+  var mx=h.c[h.l[0]];
+  L.innerHTML='<div class="big2">'+top.map(function(x){return '<div>'+ball(x)+'<div class="n">'+h.c[x]+' fois</div><div class="lg">'+(h.c[x]/h.nd*100).toFixed(1).replace('.',',')+' % des tirages</div></div>'}).join('')+'</div>'+
+    '<div class="lg" style="margin:0 0 6px"><b>Les 10 plus tirés</b></div>'+
+    h.l.slice(0,10).map(function(x){return '<div class="tr"><span class="n">'+ball(x)+'</span><span class="bar"><i style="width:'+(h.c[x]/mx*100)+'%"></i></span><span class="c">'+h.c[x]+'\u00d7</span></div>'}).join('');
 }
 function mult(a){var c={},r={dbl:[],tpl:[]};a.forEach(function(x){c[x]=(c[x]||0)+1});Object.keys(c).forEach(function(k){if(c[k]===2)r.dbl.push(+k);else if(c[k]>=3)r.tpl.push(+k)});return r}
 function render(){
-  var sl=document.getElementById('sel');
-  sl.innerHTML=NAMES.map(function(n,i){return '<option value="'+n+'"'+(n===cur?' selected':'')+'>'+(i+1)+'. '+n+' ('+store[n].length+')'+(done(n)?' ✓':'')+'</option>'}).join('');
+  document.getElementById('games').innerHTML=NAMES.map(function(n){var m=n.match(/^(\d+)\*(.*)$/);return '<a href="#" data-g="'+n+'"'+(n===cur?' class="on" aria-current="page"':'')+' onclick="setCur(this.getAttribute(\'data-g\'));go(\'home\');return false"><span class="gn">'+(m?m[1]:'')+'</span><span class="gt">'+(m?m[2]:n)+'</span><span class="gc">'+store[n].length+' tirages'+(done(n)?' \u00b7 \u2713':'')+'</span></a>'}).join('');
+  document.getElementById('gtitle').textContent=cur;
+  renderHome();renderHot();
   document.querySelectorAll('.nm').forEach(function(x){x.textContent=cur});
   document.getElementById('nb').textContent=draws.length;
+  document.getElementById('plabel').textContent=plabel(30);
+  pastPred();
   document.getElementById('tot').textContent='Aujourd\u2019hui : '+NAMES.filter(done).length+'/10 tirages enregistrés';
-  var full=done(cur),bt=document.getElementById('addBtn');
-  document.getElementById('lbl').textContent=full?cur+' : déjà enregistré aujourd\u2019hui, reviens demain':'Nouveau tirage · '+cur;
-  bt.disabled=full;bt.style.opacity=full?.5:1;
-  document.querySelectorAll('#grid input').forEach(function(x){x.disabled=full});
-  combo();duos();
+  duos();missing();pairSearch();
   var h=document.getElementById('hist'),t=document.getElementById('top');
   if(!draws.length){h.innerHTML=t.innerHTML='<div class="empty">Aucun tirage enregistré pour '+cur+'.</div>';return}
   var dys=[],shown=draws.filter(function(d){var k=dk(d.d);if(dys.indexOf(k)<0)dys.push(k);return dys.indexOf(k)<=6});
   h.innerHTML=shown.map(function(d){
     var mu=mult(d.n),tg=(mu.dbl.length?' · Doublé : '+mu.dbl.join(', '):'')+(mu.tpl.length?' · Triplé : '+mu.tpl.join(', '):'');
-    return '<div class="dr"><div><div class="balls">'+d.n.map(ball).join('')+'</div><div class="lg">'+dk(d.d)+(d.s?' · 🎲 aléatoire':'')+tg+'</div></div><span title="Verrouillé">🔒</span></div>';
+    return '<div class="dr"><div><div class="balls">'+d.n.map(ball).join('')+'</div><div class="lg"><b>'+jour(d.d)+'</b> '+dk(d.d)+(d.s?' · 🎲 aléatoire':'')+tg+'</div></div><span title="Verrouillé">🔒</span></div>';
   }).join('');
   var fm={};
-  var now=new Date(),cut=new Date(now.getFullYear(),now.getMonth(),now.getDate()-29),md=draws.filter(function(d){return new Date(d.d)>=cut});
+  var md=pdr(draws,30);
   md.forEach(function(d){d.n.forEach(function(x){fm[x]=(fm[x]||0)+1})});
   var arr=Object.keys(fm).map(function(k){return[+k,fm[k]]}).sort(function(a,b){return b[1]-a[1]||a[0]-b[0]}).slice(0,10);
   var mf=arr.length?arr[0][1]:1;
   var tp=arr.slice(0,5).map(function(a){return a[0]}),seq=[];
   for(var i=md.length-1;i>=0;i--)md[i].n.forEach(function(x){if(tp.indexOf(x)>-1&&seq.indexOf(x)<0)seq.push(x)});
-  if(!arr.length)t.innerHTML='<div class="empty">Aucun tirage sur les 30 derniers jours.</div>';else t.innerHTML='<div class="lg" style="margin:0 0 6px">Top 5, dans l\u2019ordre d\u2019enregistrement</div><div class="balls" style="margin-bottom:12px">'+seq.map(function(x,i){return '<span style="text-align:center">'+ball(x)+'<div class="lg" style="margin:2px 0 0">'+(i+1)+'</div></span>'}).join('')+'</div>'+
+  if(!arr.length)t.innerHTML='<div class="empty">Aucun tirage sur cette période.</div>';else t.innerHTML='<div class="lg" style="margin:0 0 6px">Top 5, dans l\u2019ordre d\u2019enregistrement</div><div class="balls" style="margin-bottom:12px">'+seq.map(function(x,i){return '<span style="text-align:center">'+ball(x)+'<div class="lg" style="margin:2px 0 0">'+(i+1)+'</div></span>'}).join('')+'</div>'+
     arr.map(function(a){return '<div class="tr"><span class="n">'+ball(a[0])+'</span><span class="bar"><i style="width:'+(a[1]/mf*100)+'%"></i></span><span class="c">'+a[1]+'×</span></div>'}).join('');
 }
-grid();render();
+document.getElementById('impf').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){document.getElementById('imp').value=r.result};r.readAsText(f)});
+render();loadShared();
 </script>
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
